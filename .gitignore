@@ -1,0 +1,37 @@
+# dependencies
+node_modules/
+.pnpm-store/
+.pnpm/
+
+# github co
+.github
+
+# envs / secrets
+.env
+.env.*
+!.env.example
+
+# build output
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# local HTTP scratch files
+*.local.http
+
+# if you use only pnpm, ignore accidental npm lockfiles
+package-lock.json

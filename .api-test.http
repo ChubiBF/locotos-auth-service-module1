@@ -1,0 +1,137 @@
+### get 
+GET http://localhost:3000/testing
+
+### probar GET con auth
+### get 
+GET http://localhost:3000/api/auth/hola
+
+
+
+###  REGISTRARSE COMO USUARIO NUEVO
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Andres Baldiviezo Farfan",
+  "correo": "mateofernandotorreztapia@gmail.com",
+  "password": "Mateo123",
+  "tipo_usuario": "CLIENTE",
+  "estado": "ACTIVO"
+}
+
+###  LOGEARSE 
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "correo": "andres123bf@gmail.com",
+  "password": "Password123"
+}
+
+
+### OBTENER LOS PERFILES DE LOS CLIENTES
+
+GET http://localhost:3000/api/perfil/user/1
+
+
+### HACER LA PRUEBA DE HACER UN DELETE a un perfil
+DELETE http://localhost:3000/api/perfil/4
+
+
+### INSERTAR PERFIL PARA EL USUARIO 
+POST http://localhost:3000/api/perfil
+Content-Type: application/json
+
+{
+  "id_usuario": 1,
+  "nombre": "Perfil Principal",
+  "avatar_u": "https://media.es.wired.com/photos/67afa9b53e4ec3352eac94c6/16:9/w_1280,c_limit/perro%20corriendo.jpg",
+  "id_clasificacion_maxima": 3,
+  "idioma_preferido": "es",
+  "modo_oscuro": true
+}
+
+
+# --------------EDICIONES PATCHS A LOS PERFILES -------------------------
+### EDITAR SOLO EL NOMBRE DEL PERFIL
+PATCH http://localhost:3000/api/perfil/5
+Content-Type: application/json
+
+{
+  "nombre": "Perfil Actualizado"
+}
+
+### EDITAR SOLO EL AVATAR DEL PERFIL
+PATCH http://localhost:3000/api/perfil/5
+Content-Type: application/json
+
+{
+  "avatar_url": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80"
+}
+
+### EDITAR IDIOMA Y MODO OSCURO
+PATCH http://localhost:3000/api/perfil/5
+Content-Type: application/json
+
+{
+  "idioma_preferido": "es-ES",
+  "modo_oscuro": false
+}
+
+### EDITAR CLASIFICACION MAXIMA
+PATCH http://localhost:3000/api/perfil/5
+Content-Type: application/json
+
+{
+  "id_clasificacion_maxima": 4
+}
+
+### EDITAR VARIOS CAMPOS DEL PERFIL
+PATCH http://localhost:3000/api/perfil/3
+Content-Type: application/json
+
+{
+  "nombre": "Perfil Cine Nocturno",
+  "avatar_url": "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=800&q=80",
+  "id_clasificacion_maxima": 2,
+  "idioma_preferido": "pt",
+  "modo_oscuro": true
+}
+andres.nuevo@example.com
+# -------------------------------------
+
+### SOLICITAR RECUPERACION DE CONTRASENA
+POST http://localhost:3000/api/email/forgot-password
+Content-Type: application/json
+
+{
+  "correo": "andres123bf@gmail.com"
+}
+
+### CAMBIAR CONTRASENA CON TOKEN
+POST http://localhost:3000/api/email/reset-password
+Content-Type: application/json
+
+{
+  "correo": "andres123bf@gmail.com",
+  "token": "0b2c24c5-3c1a-4742-b667-625850ca144f",
+  "newPassword": "Password123"
+}
+
+
+### VERIFICAR EMAIL CON CODIGO
+POST http://localhost:3000/api/email/send-verification
+Content-Type: application/json
+
+{
+  "correo": "mateofernandotorreztapia@gmail.com"
+}
+
+### VERIFICAR EMAIL CON CODIGO
+POST http://localhost:3000/api/email/verify-email
+Content-Type: application/json
+
+{
+  "correo": "mateofernandotorreztapia@gmail.com",
+  "code": "119864"
+}

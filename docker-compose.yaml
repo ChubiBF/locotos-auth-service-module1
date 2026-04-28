@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # --- BASE DE DATOS MYSQL ---
+  db:
+    image: mysql:8.0
+    container_name: mysql-locotos
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # --- CACHÉ REDIS ---
+  cache:
+    image: redis:alpine
+    container_name: redis-locotos
+    restart: always
+    ports:
+      - "6379:6379"
+
+  # --- SERVIDOR NODE.JS (TU APP) ---
+  app:
+    build: .
+    container_name: auth-service-locotos
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db        # Muy importante: apunta al nombre del servicio 'db'
+      - REDIS_HOST=cache  # Apunta al nombre del servicio 'cache'
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+    depends_on:
+      - db
+      - cache
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  mysql_data:
