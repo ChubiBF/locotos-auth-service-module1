@@ -1,21 +1,30 @@
 import { createPool } from 'mysql2/promise'
+
+// cofig
+import { connectionConfig } from './database/mysql-config.js'
+import { RedisEmailRepository } from './database/redis-email.repository.js'
+import { EmailService } from './email/email.service.js'
+
+// repos
 import { MySQLUserRepository } from './database/mysql-user.repository.js'
+import { MySQLPerfilRepository } from './database/mysql-perfil.repository.js'
+import { MySQLSessionRepository } from './database/mysql-session.repository.js'
+
+// controllers
 import { RegisterUser } from '../application/use-cases/auth/register-user.js'
 import { UserController } from './http/Controllers/user-controller.js'
-import { connectionConfig } from './database/mysql-config.js'
+import { PerfilController } from './http/Controllers/perfil-controller.js'
+import { EmailController } from './http/Controllers/email-controller.js'
+
+// use cases
 import { LoginUser } from '../application/use-cases/auth/login-user.js'
-import { MySQLPerfilRepository } from './database/mysql-perfil.repository.js'
 import { CreateProfile } from '../application/use-cases/perfil/create-profile.js'
 import { GetProfilesByUser } from '../application/use-cases/perfil/get-profiles-by-user.js'
 import { EditProfile } from '../application/use-cases/perfil/edit-profile.js'
 import { DeleteProfile } from '../application/use-cases/perfil/delete-profile.js'
-import { PerfilController } from './http/Controllers/perfil-controller.js'
-import { RedisEmailRepository } from './database/redis-email.repository.js'
-import { EmailService } from './email/email.service.js'
 import { RequestPasswordReset } from '../application/use-cases/email/request-password-reset.js'
 import { ResetPassword } from '../application/use-cases/email/reset-password.js'
 import { VerifyEmail } from '../application/use-cases/email/verify-email.js'
-import { EmailController } from './http/Controllers/email-controller.js'
 import { SendVerificationEmail } from '../application/use-cases/email/send-verify-email.js'
 
 const pool = createPool({
@@ -25,10 +34,11 @@ const pool = createPool({
 // ------PARA EL USER ////
 // Repository
 const userRepository = new MySQLUserRepository(pool)
+const sessionRepository = new MySQLSessionRepository(pool)
 
 // Use-case
 const registerUser = new RegisterUser(userRepository)
-const loginUser = new LoginUser(userRepository)
+const loginUser = new LoginUser(userRepository, sessionRepository)
 
 // Controller
 const userController = new UserController(registerUser, loginUser)

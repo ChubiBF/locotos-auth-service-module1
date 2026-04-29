@@ -17,12 +17,15 @@ export class UserController {
 
   async login (req: Request, res: Response): Promise<void> {
     try {
-      const user = await this.loginUser.execute(req.body)
-      if (user == null) {
-        res.status(500).json({ error: 'no se pudo iniciar sesion, intente de nuevo' })
-        return
-      }
-      res.status(200).json({ user: user?.user, token: user?.token })
+      const { correo, password } = req.body
+
+      const ipOrigen = req.ip ?? req.socket.remoteAddress ?? 'unknown'
+      const disp = Array.isArray(req.headers['user-agent'])
+        ? req.headers['user-agent'].join(', ')
+        : req.headers['user-agent'] ?? 'unknown'
+
+      const result = await this.loginUser.execute({ correo, password, ip: ipOrigen, dispositivo: disp })
+      res.status(200).json(result)
     } catch (e: any) {
       console.log(e)
       res.status(400).json({ error: e.message })

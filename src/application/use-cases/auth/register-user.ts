@@ -9,15 +9,20 @@ export class RegisterUser {
   constructor (private readonly userRepository: IUserRepository) {}
 
   async execute (data: UsuarioToRegister): Promise<UsuarioBasic | null> {
-    const existing = await this.userRepository.findByEmail(data.correo)
-    if (existing != null) throw new Error('el correo ya esta registrado')
+    try {
+      const existing = await this.userRepository.findByEmail(data.correo)
+      if (existing != null) throw new Error('el correo ya esta registrado')
 
-    // bcrypt
-    const password = await bcrypt.hash(data.password_hash, 10)
+      // bcrypt
+      const password = await bcrypt.hash(data.password_hash, 10)
 
-    const usuario = await this.userRepository.save({ ...data, password_hash: password })
+      const usuario = await this.userRepository.save({ ...data, password_hash: password })
 
-    if (usuario == null) return null
-    return mapUsuarioToUsuarioBasic(usuario)
+      if (usuario == null) return null
+      return mapUsuarioToUsuarioBasic(usuario)
+    } catch (e) {
+      console.log(e)
+      throw e
+    }
   }
 }
