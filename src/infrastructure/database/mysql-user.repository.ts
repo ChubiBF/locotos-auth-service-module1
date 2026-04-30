@@ -9,9 +9,9 @@ export class MySQLUserRepository implements IUserRepository {
 
   async save (user: UsuarioToRegister): Promise<Usuario | null> {
     try {
-      const query = 'INSERT INTO Usuario (nombre, correo, password_hash, tipo_usuario) VALUES (?, ?, ?, ?)'
+      const query = 'INSERT INTO Usuario (nombre, correo, password_hash, tipo_usuario, estado) VALUES (?, ?, ?, ?, ?)'
 
-      const [result] = await this.db.execute(query, [user.nombre, user.correo, user.password_hash, user.tipo_usuario])
+      const [result] = await this.db.execute(query, [user.nombre, user.correo, user.password_hash, user.tipo_usuario, user.estado])
 
       const insertResult = result as any
       if (insertResult.affectedRows === 0) return null

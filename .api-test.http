@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
   "nombre": "Andres Baldiviezo Farfan",
-  "correo": "mateofernandotorreztapia@gmail.com",
+  "correo": "andres321bf@gmail.com",
   "password": "Mateo123",
   "tipo_usuario": "CLIENTE",
   "estado": "ACTIVO"

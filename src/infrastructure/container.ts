@@ -35,9 +35,12 @@ const pool = createPool({
 // Repository
 const userRepository = new MySQLUserRepository(pool)
 const sessionRepository = new MySQLSessionRepository(pool)
+/// / ------------ PARA LOS CORREOS ////
+const emailCacheRepository = new RedisEmailRepository()
+const emailService = new EmailService()
 
 // Use-case
-const registerUser = new RegisterUser(userRepository)
+const registerUser = new RegisterUser(userRepository, emailCacheRepository, emailService)
 const loginUser = new LoginUser(userRepository, sessionRepository)
 
 // Controller
@@ -54,10 +57,6 @@ const deleteProfile = new DeleteProfile(perfilRepository)
 
 // Controlador
 const perfilController = new PerfilController(createProfile, getProfiles, editProfile, deleteProfile)
-
-/// / ------------ PARA LOS CORREOS ////
-const emailCacheRepository = new RedisEmailRepository()
-const emailService = new EmailService()
 
 const requestPasswordReset = new RequestPasswordReset(userRepository, emailCacheRepository, emailService)
 const resetPassword = new ResetPassword(userRepository, emailCacheRepository)
