@@ -28,7 +28,7 @@ export class RegisterUser {
       const usuario = await this.userRepository.save({ ...data, password_hash: password })
 
       if (usuario == null) {
-        throw new Error('No se encontró una cuenta con ese correo electrónico')
+        throw new Error('no se pudo crear el usuario')
       }
 
       if (usuario.estado === estadoUsuario.activo) {

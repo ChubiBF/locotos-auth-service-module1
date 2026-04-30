@@ -23,7 +23,7 @@ export class MySQLUserRepository implements IUserRepository {
       }
     } catch (e) {
       console.log({ e })
-      return null
+      throw e
     }
   }
 
