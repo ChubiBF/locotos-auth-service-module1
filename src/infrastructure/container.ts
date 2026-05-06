@@ -26,30 +26,37 @@ import { RequestPasswordReset } from '../application/use-cases/email/request-pas
 import { ResetPassword } from '../application/use-cases/email/reset-password.js'
 import { VerifyEmail } from '../application/use-cases/email/verify-email.js'
 import { SendVerificationEmail } from '../application/use-cases/email/send-verify-email.js'
+import { RedisAuthSesionRepository } from './database/redis-auth-sesion.repository.js'
+import { LogoutUser } from '../application/use-cases/auth/logout-user.js'
+import { ValidateSession } from '../application/use-cases/auth/validate-sesion.js'
+import { AuthController } from './http/Controllers/auth-controller.js'
 
 const pool = createPool({
   ...connectionConfig
 })
 
-// ------PARA EL USER ////
-// Repository
+// REPOSITORIOS -----------------------------------------------
+// user
 const userRepository = new MySQLUserRepository(pool)
 const sessionRepository = new MySQLSessionRepository(pool)
-/// / ------------ PARA LOS CORREOS ////
+// email
 const emailCacheRepository = new RedisEmailRepository()
 const emailService = new EmailService()
+// auth de validacion de sesiones
+const authSesionRepository = new RedisAuthSesionRepository()
 
-// Use-case
+// -----------------------------------------------USER  //
+// use cases
 const registerUser = new RegisterUser(userRepository, emailCacheRepository, emailService)
-const loginUser = new LoginUser(userRepository, sessionRepository)
+const loginUser = new LoginUser(userRepository, sessionRepository, authSesionRepository)
 
-// Controller
+// controlador
 const userController = new UserController(registerUser, loginUser)
 
 /// ------------- PARA LOS PERFILES ///
 const perfilRepository = new MySQLPerfilRepository(pool)
 
-// Casos de Uso de Perfil
+// use cases
 const createProfile = new CreateProfile(perfilRepository, userRepository)
 const getProfiles = new GetProfilesByUser(perfilRepository, userRepository)
 const editProfile = new EditProfile(perfilRepository)
@@ -58,16 +65,26 @@ const deleteProfile = new DeleteProfile(perfilRepository)
 // Controlador
 const perfilController = new PerfilController(createProfile, getProfiles, editProfile, deleteProfile)
 
+// ------------------ PARA LOS ENVIOS DE CORREOS ///
+// uses cases
 const requestPasswordReset = new RequestPasswordReset(userRepository, emailCacheRepository, emailService)
 const resetPassword = new ResetPassword(userRepository, emailCacheRepository)
 const verifyEmail = new VerifyEmail(userRepository, emailCacheRepository)
 const sendVerificationEmail = new SendVerificationEmail(userRepository, emailCacheRepository, emailService)
 
+// controller
 const emailController = new EmailController(requestPasswordReset, resetPassword, verifyEmail, sendVerificationEmail)
 
+// -------------- PARA AUTH DE SESIONES /////
+// use cases
+const logoutUser = new LogoutUser(authSesionRepository)
+const validate = new ValidateSession(authSesionRepository)
+// controller
+const authController = new AuthController(validate, logoutUser)
 // ---- export///
 export {
   userController,
   perfilController,
-  emailController
+  emailController,
+  authController
 }

@@ -135,3 +135,38 @@ Content-Type: application/json
   "correo": "mateofernandotorreztapia@gmail.com",
   "code": "119864"
 } 
+
+
+### Variables de Entorno
+@hostname = localhost
+@port = 3000
+@baseUrl = http://{{hostname}}:{{port}}/api/auth
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInRpcG8iOm51bGwsImlhdCI6MTc3NzY3NDQwNSwiZXhwIjoxNzc3NzYwODA1fQ.UEIcjXyNXiTjHdfFujCFpPMCLw1oXiiUtLZ-1WUvvq0
+
+### 1. Registro de Usuario (M1)
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+  "nombre": "Andres Wilfredo",
+  "correo": "andres777@gmail.com",
+  "password": "locotosPassword123"
+}
+
+### 2. Login de Usuario (M1 + M7)
+# @name login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "correo": "andres777@gmail.com",
+  "password": "locotosPassword123"
+}
+
+### 3. Validar Sesión (M7 - Lo que usará Mateo)
+GET {{baseUrl}}/validate-session
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInRpcG8iOm51bGwsImlhdCI6MTc3NzY3NDQwNSwiZXhwIjoxNzc3NzYwODA1fQ.UEIcjXyNXiTjHdfFujCFpPMCLw1oXiiUtLZ-1WUvvq0
+
+### 4. Logout (M7)
+POST {{baseUrl}}/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInRpcG8iOm51bGwsImlhdCI6MTc3NzY3NDQwNSwiZXhwIjoxNzc3NzYwODA1fQ.UEIcjXyNXiTjHdfFujCFpPMCLw1oXiiUtLZ-1WUvvq0

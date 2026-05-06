@@ -12,8 +12,8 @@ export const registerSchema = z.object({
     .regex(/[A-Z]/, 'la contrasena debe contener al menos una mayuscula')
     .regex(/[a-z]/, 'la contrasena debe contener al menos una minuscula')
     .regex(/[0-9]/, 'la contrasena debe contener al menos un numero'),
-  tipo_usuario: z.string({ error: requiredOrFilled }).pipe(z.enum(tipoUsuario, 'ingresa un tipo de usuario valido')),
-  estado: z.string({ error: requiredOrFilled }).pipe(z.enum(estadoUsuario, 'ingresa un estado de usuario valido'))
+  tipo_usuario: z.string({ error: requiredOrFilled }).pipe(z.enum(tipoUsuario, 'ingresa un tipo de usuario valido')).optional(),
+  estado: z.string({ error: requiredOrFilled }).pipe(z.enum(estadoUsuario, 'ingresa un estado de usuario valido')).optional()
 })
 
 export const loginSchema = z.object({

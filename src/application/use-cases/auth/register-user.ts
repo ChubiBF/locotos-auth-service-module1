@@ -21,6 +21,7 @@ export class RegisterUser {
       if (existing != null) throw new Error('el correo ya esta registrado')
 
       data.estado = estadoUsuario.pendiente_verificacion
+      data.tipo_usuario = data.tipo_usuario ?? null
 
       // bcrypt
       const password = await bcrypt.hash(data.password_hash, 10)

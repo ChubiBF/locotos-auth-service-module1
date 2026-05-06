@@ -5,10 +5,12 @@ import type { IUserRepository } from '../../../domain/repositories/user.reposito
 import { mapUsuarioToUsuarioBasic } from '../../mappers/usuario.mappers.js'
 import type { LoginInputDto } from '../../dtos/auth.dto.js'
 import type { ISessionRepository } from '../../../domain/repositories/sesion.repository.js'
+import type { IAuthSesionRepository } from '../../../domain/repositories/auth.sesion.repository.js'
 
 export class LoginUser {
   constructor (private readonly userRepository: IUserRepository,
-    private readonly sesionRepository: ISessionRepository
+    private readonly sesionRepository: ISessionRepository,
+    private readonly authSesionRepository: IAuthSesionRepository
   ) { }
 
   async execute (data: LoginInputDto): Promise<{ user: UsuarioBasic, token: string }> {
@@ -27,6 +29,10 @@ export class LoginUser {
 
       await this.sesionRepository.save({ id_usuario: usuario.id_usuario, ip_origen: data.ip, dispositivo: data.dispositivo })
 
+      await this.authSesionRepository.saveSesion({
+        token,
+        id_usuario: usuario.id_usuario
+      })
       return {
         user: mapUsuarioToUsuarioBasic(usuario),
         token

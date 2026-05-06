@@ -1,0 +1,33 @@
+### Variables de Entorno
+@hostname = localhost
+@port = 3000
+@baseUrl = http://{{hostname}}:{{port}}/api/auth
+@token = TU_TOKEN_AQUI
+
+### 1. Registro de Usuario (M1)
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+  "nombre": "Andres Wilfredo",
+  "correo": "andres321bf@gmail.com",
+  "password": "locotosPassword123"
+}
+
+### 2. Login de Usuario (M1 + M7)
+# @name login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "correo": "andres321bf@gmail.com",
+  "password": "locotosPassword123"
+}
+
+### 3. Validar Sesión (M7 - Lo que usará Mateo)
+GET {{baseUrl}}/validate-session
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidGlwbyI6bnVsbCwiaWF0IjoxNzc3Njc0OTQyLCJleHAiOjE3Nzc3NjEzNDJ9.ge3hbDUij8UGMo4DlsTqvFHVN8bf_Z4MSROmyEf_KTk
+
+### 4. Logout (M7)
+POST {{baseUrl}}/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwidGlwbyI6bnVsbCwiaWF0IjoxNzc3Njc0OTQyLCJleHAiOjE3Nzc3NjEzNDJ9.ge3hbDUij8UGMo4DlsTqvFHVN8bf_Z4MSROmyEf_KTk
