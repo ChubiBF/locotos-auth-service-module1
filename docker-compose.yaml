@@ -12,7 +12,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./database/script_gestionDeUsuariosYperfiles.sql:/docker-entrypoint-initdb.d/init.sql
 
   # --- CACHÉ REDIS ---
   cache:
@@ -30,8 +30,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DB_HOST=db        # Muy importante: apunta al nombre del servicio 'db'
-      - REDIS_HOST=cache  # Apunta al nombre del servicio 'cache'
+      - DB_HOST=db        
+      - REDIS_HOST=cache 
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}

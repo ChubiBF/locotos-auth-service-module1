@@ -20,9 +20,10 @@ export class UserController {
       const { correo, password } = req.body
 
       const ipOrigen = req.ip ?? req.socket.remoteAddress ?? 'unknown'
-      const disp = Array.isArray(req.headers['user-agent'])
-        ? req.headers['user-agent'].join(', ')
-        : req.headers['user-agent'] ?? 'unknown'
+      // const disp = Array.isArray(req.headers['user-agent'])
+      //   ? req.headers['user-agent'].join(', ')
+      //   : req.headers['user-agent'] ?? 'unknown'
+      const disp = 'unknown'
 
       const result = await this.loginUser.execute({ correo, password, ip: ipOrigen, dispositivo: disp })
       res.status(200).json(result)

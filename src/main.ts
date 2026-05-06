@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express'
 import userRouter from './infrastructure/http/Routes/user-router.js'
 import cors from 'cors'
@@ -16,7 +17,7 @@ app.use('/api/email', emailRouter)
 
 app.get('/testing', (req, res) => {
   console.log('primera')
-  res.send('<h1> HOLA BOLA</h1>')
+  res.send('<h1> HOLA FUNCIONANDO</h1>')
 })
 
 app.listen(PORT, () => {
